@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import argparse
+import signal
 
 class HostPort:
     def __init__(self, address, ports):
@@ -23,7 +24,12 @@ def main():
         for port in host_port.ports:
             print(f"{host_port.address}:{port}")
 
+def signal_handler(signal, frame):
+    print("Ctrl-C pressed. Exiting gracefully.")
+    sys.exit(0)
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal_handler)
     parser = argparse.ArgumentParser()
     parser.add_argument("--filepath", type=str, help="Path to XML file from nmap results")
     args = parser.parse_args()
